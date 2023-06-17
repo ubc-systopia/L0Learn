@@ -104,6 +104,11 @@ std::vector<std::unique_ptr<FitResult<T>>> Grid1D<T>::Fit() {
         Xtrarma = 0.5 * arma::abs(y->t() * *X).t();
       }  // = gradient of logistic loss at zero}
       Lipconst = 0.25 + 2 * P.ModelParams[2];
+    } else if (P.Specs.Exponential) {
+      if (!XtrAvailable) {
+        Xtrarma = 0.5 * arma::abs(y->t() * *X).t();
+      } // = gradient of logistic loss at zero}
+      Lipconst = 0.25 + 2 * P.ModelParams[2];
     } else if (P.Specs.SquaredHinge) {
       if (!XtrAvailable) {
         // gradient of loss function at zero

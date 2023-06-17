@@ -4,6 +4,7 @@
 struct Model {
   bool SquaredError = false;
   bool Logistic = false;
+  bool Exponential = false;
   bool SquaredHinge = false;
   bool Classification = false;
 

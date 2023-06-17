@@ -5,6 +5,8 @@
 #include "CDL012.h"
 #include "CDL012Logistic.h"
 #include "CDL012LogisticSwaps.h"
+#include "CDL012Exponential.h"
+#include "CDL012ExponentialSwaps.h"
 #include "CDL012SquaredHinge.h"
 #include "CDL012SquaredHingeSwaps.h"
 #include "CDL012Swaps.h"
@@ -28,6 +30,12 @@ CDBase<T> *make_CD(const T &Xi, const arma::vec &yi, const Params<T> &P) {
       return new CDL012Logistic<T>(Xi, yi, P);
     } else if (P.Specs.PSI) {
       return new CDL012LogisticSwaps<T>(Xi, yi, P);
+    }
+  } else if (P.Specs.Exponential) {
+    if (P.Specs.CD) {
+      return new CDL012Exponential<T>(Xi, yi, P);
+    } else if (P.Specs.PSI) {
+      return new CDL012ExponentialSwaps<T>(Xi, yi, P);
     }
   } else if (P.Specs.SquaredHinge) {
     if (P.Specs.CD) {

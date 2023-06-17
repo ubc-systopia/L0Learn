@@ -11,7 +11,7 @@ from scipy.sparse import csc_matrix
 import numpy as np
 from warnings import warn
 
-SUPPORTED_LOSS = ("SquaredError", "Logistic", "SquaredHinge")
+SUPPORTED_LOSS = ("SquaredError", "Logistic", "Exponential", "SquaredHinge")
 CLASSIFICATION_LOSS = SUPPORTED_LOSS[1], SUPPORTED_LOSS[2]
 SUPPORTED_PENALTY = ("L0", "L0L1", "L0L2")
 SUPPORTED_ALGORITHM = ("CD", "CDPSI")

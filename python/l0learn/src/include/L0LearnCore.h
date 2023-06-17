@@ -103,6 +103,9 @@ GridParams<T> makeGridParams(
   } else if (Loss == "Logistic") {
     PG.P.Specs.Logistic = true;
     PG.P.Specs.Classification = true;
+  } else if (Loss == "Exponential") {
+    PG.P.Specs.Exponential = true;
+    PG.P.Specs.Classification = true;
   } else if (Loss == "SquaredHinge") {
     PG.P.Specs.SquaredHinge = true;
     PG.P.Specs.Classification = true;
