@@ -71,7 +71,7 @@ FitResult<T> CDL012Swaps<T>::_Fit() {
 					return i < j;
 				}
 				return frequency_count(i) < frequency_count(j);
-		})
+		});
 		///////////////////////////////////////////////////// 
 
     foundbetter = false;
