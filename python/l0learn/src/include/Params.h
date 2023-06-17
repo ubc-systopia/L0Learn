@@ -34,6 +34,8 @@ struct Params {
   bool withBounds = false;
   arma::vec Lows;
   arma::vec Highs;
+
+  std::unordered_map<std::size_t, arma::uvec> * Xy_neg_indices; // my new stuff, row indices for entries == -1 for each feature column
 };
 
 #endif

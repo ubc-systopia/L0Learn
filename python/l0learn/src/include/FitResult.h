@@ -17,6 +17,8 @@ struct FitResult {
   double b0 = 0;  // used by classification models and sparse regression models
   arma::vec ExpyXB;   // Used by Logistic regression
   arma::vec onemyxb;  // Used by SquaredHinge regression
+                      //
+  arma::vec inverse_ExpyXB; // my new stuff, used by exponential loss for binary classification with binary features
 };
 
 #endif

@@ -79,7 +79,7 @@ template <class T>
 FitResult<T> CDL012ExponentialSwaps<T>::_Fit() {
 	// std::cout << "CDL012LogisticSwaps.cpp i'm in line 22\n";
 
-	auto result = CDL012Exponential<T>(*(this->X), *(this->y), this->P).Fit(); // result will be maintained till the end
+	auto result = CDL012Exponential<T>(*(this->X), this->y, this->P).Fit(); // result will be maintained till the end
 	this->b0 = result.b0; // Initialize from previous later....!
 	this->B = result.B;
 	arma::vec inverse_ExpyXB = result.inverse_ExpyXB; // Maintained throughout the algorithm
@@ -187,7 +187,7 @@ FitResult<T> CDL012ExponentialSwaps<T>::_Fit() {
 					// TODO: Check if this line is necessary. P should already have b0.
 					this->P.b0 = this->b0;
 
-					result = CDL012Exponential<T>(*(this->X), *(this->y), this->P).Fit();
+					result = CDL012Exponential<T>(*(this->X), this->y, this->P).Fit();
 
 					inverse_ExpyXB = result.inverse_ExpyXB;
 					this->B = result.B;

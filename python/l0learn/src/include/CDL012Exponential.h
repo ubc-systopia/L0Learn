@@ -133,7 +133,7 @@ CDL012Exponential<T>::CDL012Exponential(const T& Xi, const arma::vec& yi, const 
 	this->thr = std::sqrt(this->thr2);
 	lambda1ol = this->lambda1 / qp2lamda2;
 
-	this->inverse_ExpyXB = arma::exp(-*this->y % (*(this->X) * this->B + this->b0)); // Maintained throughout the algorithm
+	this->inverse_ExpyXB = arma::exp(-this->y % (*(this->X) * this->B + this->b0)); // Maintained throughout the algorithm
 																																									 // Xy = P.Xy;
 	this->current_expo_loss = arma::sum(this->inverse_ExpyXB);
 	Xy_neg_indices = P.Xy_neg_indices;
@@ -216,19 +216,19 @@ FitResult<T> CDL012Exponential<T>::_Fit() {
 		if (this->intercept){
 			const double b0old = this->b0;
 
-			// indices = arma::find(*(this->y) < 0);
+			// indices = arma::find(this->y < 0);
 			indices = (*(this->Xy_neg_indices))[-1];
 			// this->d_minus = arma::sum(this->inverse_ExpyXB.elem(indices)) / arma::sum(this->inverse_ExpyXB);
 			this->d_minus = arma::sum(this->inverse_ExpyXB.elem(indices)) / this->current_expo_loss;
 			const double partial_b0 = -0.5*std::log((1-this->d_minus)/this->d_minus);
 			this->b0 -= partial_b0;
-			this->inverse_ExpyXB %= arma::exp( partial_b0 * *(this->y));
+			this->inverse_ExpyXB %= arma::exp( partial_b0 * this->y);
 			this->current_expo_loss *= 2*std::sqrt(this->d_minus*(1-this->d_minus));
 
-			// // const double partial_b0 = - arma::sum( *(this->y) / (1 + ExpyXB) );
-			// const double partial_b0 = - arma::dot( *(this->y) , 1/(1 + ExpyXB) );
+			// // const double partial_b0 = - arma::sum( this->y / (1 + ExpyXB) );
+			// const double partial_b0 = - arma::dot( this->y , 1/(1 + ExpyXB) );
 			// this->b0 -= partial_b0 / (this->n * LipschitzConst); // intercept is not regularized
-			// ExpyXB %= arma::exp( (this->b0 - b0old) * *(this->y));
+			// ExpyXB %= arma::exp( (this->b0 - b0old) * this->y);
 		}
 
 		for (auto& i : this->Order) {
@@ -236,7 +236,7 @@ FitResult<T> CDL012Exponential<T>::_Fit() {
 			this->UpdateBi(i);
 		}
 		// std::cout << "CDL012Logistic.h line 145. Total loss is " + std::to_string(this->current_expo_loss) + " & " + std::to_string(arma::sum(this->inverse_ExpyXB)) + "\n";
-		// std::cout << "Another check of total loss is: " + std::to_string(arma::sum(1.0 / arma::exp(*this->y % (*(this->X) * this->B + this->b0)))) + "\n";
+		// std::cout << "Another check of total loss is: " + std::to_string(arma::sum(1.0 / arma::exp(this->y % (*(this->X) * this->B + this->b0)))) + "\n";
 		// std::cout << "sparsity level is " + std::to_string(n_nonzero(this->B)) + "\n";
 
 		this->RestrictSupport();
@@ -276,10 +276,10 @@ FitResult<T> CDL012Exponential<T>::_FitWithBounds() { // always uses active sets
 		// Update the intercept
 		if (this->intercept){
 			const double b0old = this->b0;
-			// const double partial_b0 = - arma::sum( *(this->y) / (1 + ExpyXB) );
-			const double partial_b0 = - arma::dot( *(this->y) , 1/(1 + ExpyXB) );
+			// const double partial_b0 = - arma::sum( this->y / (1 + ExpyXB) );
+			const double partial_b0 = - arma::dot( this->y , 1/(1 + ExpyXB) );
 			this->b0 -= partial_b0 / (this->n * LipschitzConst); // intercept is not regularized
-			ExpyXB %= arma::exp( (this->b0 - b0old) * *(this->y));
+			ExpyXB %= arma::exp( (this->b0 - b0old) * this->y);
 		}
 
 		for (auto& i : this->Order) {
