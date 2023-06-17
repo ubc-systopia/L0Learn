@@ -60,8 +60,19 @@ FitResult<T> CDL012Swaps<T>::_Fit() {
 
   bool foundbetter = false;
 
+	arma::rowvec frequency_count = arma::zeros<arma::rowvec>(this->p);
   for (std::size_t t = 0; t < this->MaxNumSwaps; ++t) {
-    std::vector<std::size_t> NnzIndices = nnzIndicies(this->B, this->NoSelectK);
+    ///////////////////////////////////////////////////// Original Method, Method I
+    /* std::vector<std::size_t> NnzIndices = nnzIndicies(this->B, this->NoSelectK); */
+		///////////////////////////////////////////////////// Priority Queue order, Method II
+		std::vector<std::size_t> NnzIndices = nnzIndicies(this->B, this->NoSelectK);
+		std::sort(NnzIndices.begin(), NnzIndices.end(), [&](std::size_t i, std::size_t j){
+				if (frequency_count(i) == frequency_count(j)){
+					return i < j;
+				}
+				return frequency_count(i) < frequency_count(j);
+		})
+		///////////////////////////////////////////////////// 
 
     foundbetter = false;
 
@@ -132,6 +143,9 @@ FitResult<T> CDL012Swaps<T>::_Fit() {
         foundbetter = true;
         break;
       }
+			else {
+				frequency_count(i) += 1;
+			}
     }
 
     if (!foundbetter) {
