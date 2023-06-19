@@ -166,7 +166,7 @@ def _fit_check(
         if loss == "Exponential":
             unique_X_items = sorted(np.unique(X))
 
-            if (len(unique_X_items) != 2) or (unique_X_items[0] != 0) or (unique_X_items != 1):
+            if (len(unique_X_items) != 2) or (unique_X_items[0] != 0) or (unique_X_items[1] != 1):
                 raise ValueError(
                         f"expected X matrix to only have 0 or 1 as its value per entry (Binary Classification, Exponential loss), "
                         f"try applying thresholding to convert each column into several columns with only binary 0/1 features."
