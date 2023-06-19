@@ -41,8 +41,19 @@ template <class T>
 Grid<T>::Grid(const T &X, const arma::vec &y, const GridParams<T> &PGi) {
   PG = PGi;
 
-  std::tie(BetaMultiplier, meanX, meany, scaley) = Normalize(
-      X, y, Xscaled, yscaled, !PG.P.Specs.Classification, PG.intercept);
+  if (!PG.P.Specs.Exponential) { // if the loss is not exponential
+    std::tie(BetaMultiplier, meanX, meany, scaley) = Normalize(
+        X, y, Xscaled, yscaled, !PG.P.Specs.Classification, PG.intercept);
+  } else { // if the loss is exponential
+    Xscaled = 2*X-1;
+    meanX.set_size(X.n_cols);
+    meanX.fill(0.5);
+    BetaMultiplier.set_size(X.n_cols);
+    BetaMultiplier.fill(2.0);
+    meany = 0;
+    scaley = 1;
+    yscaled = y;
+  }
 
   // Must rescale bounds by BetaMultiplier in order for final result to conform
   // to bounds

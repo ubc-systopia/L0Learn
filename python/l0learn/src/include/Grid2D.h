@@ -55,6 +55,10 @@ template <class T>
 Grid2D<T>::~Grid2D() {
   delete Xtr;
   if (PG.P.Specs.Logistic) delete PG.P.Xy;
+  if (PG.P.Specs.Exponential){
+    delete PG.P.Xy;
+    delete PG.P.Xy_neg_indices;
+  }
   if (PG.P.Specs.SquaredHinge) delete PG.P.Xy;
 }
 
@@ -84,6 +88,57 @@ std::vector<std::vector<std::unique_ptr<FitResult<T>>>> Grid2D<T>::Fit() {
     PG.P.Xy = new T;
     *PG.P.Xy = Xy;
   }
+
+	else if (PG.P.Specs.Exponential) {
+		// std::cout << "Grid2D.cpp i'm in line 61\n";
+		auto n = X->n_rows;
+		double b0 = 0;
+		// arma::vec ExpyXB =  arma::ones<arma::vec>(n);
+		// if (PG.intercept) {
+		//     for (std::size_t t = 0; t < 50; ++t) {
+		//         double partial_b0 = - arma::sum( *y / (1 + ExpyXB) );
+		//         b0 -= partial_b0 / (n * 0.25); // intercept is not regularized
+		//         ExpyXB = arma::exp(b0 * *y);
+		//     }
+		// }
+
+
+		// PG.P.b0 = b0;
+		// Xtrarma = arma::abs(- arma::trans(*y /(1+ExpyXB)) * *X).t(); // = gradient of logistic loss at zero
+		// //Xtrarma = 0.5 * arma::abs(y->t() * *X).t(); // = gradient of logistic loss at zero
+
+		T Xy =  matrix_vector_schur_product(*X, y); // X->each_col() % *y;
+
+		PG.P.Xy = new T;
+		*PG.P.Xy = Xy;
+
+		std::unordered_map<std::size_t, arma::uvec> Xy_neg_indices;
+		for (size_t tmp = 0; tmp < Xy.n_cols; ++tmp){
+			Xy_neg_indices.insert(std::make_pair(tmp, arma::find(matrix_column_get(*(PG.P.Xy), tmp) < 0)));
+		}
+		Xy_neg_indices.insert(std::make_pair(-1, arma::find(*y < 0)));
+		PG.P.Xy_neg_indices = new std::unordered_map<std::size_t, arma::uvec>;
+		*PG.P.Xy_neg_indices = Xy_neg_indices;
+
+		// indices = (*(this->Xy_neg_indices))[-1];
+		// // this->d_minus = arma::sum(this->inverse_ExpyXB.elem(indices)) / arma::sum(this->inverse_ExpyXB);
+		// this->d_minus = arma::sum(this->inverse_ExpyXB.elem(indices)) / this->current_expo_loss;
+		// const double partial_b0 = -0.5*std::log((1-this->d_minus)/this->d_minus);
+		// this->b0 -= partial_b0;
+
+		arma::vec inverse_ExpyXB =  arma::ones<arma::vec>(n);
+		// calcualte the exponential intercept when all coordinates are zero
+		b0 = 0.0;
+		if (PG.intercept) {
+			arma::uvec indices = Xy_neg_indices[-1];
+			double d_minus = (double)indices.n_elem / (double)n;
+			double partial_b0 = -0.5*std::log((1-d_minus)/d_minus);
+			b0 -= partial_b0;
+			inverse_ExpyXB %= arma::exp( partial_b0 * *y);
+		}
+		PG.P.b0 = b0;
+		Xtrarma = arma::abs(- arma::trans(*y % inverse_ExpyXB) * *X).t(); // = gradient of logistic loss at zero
+	}
 
   else if (PG.P.Specs.SquaredHinge) {
     auto n = X->n_rows;
