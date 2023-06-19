@@ -12,7 +12,7 @@ import numpy as np
 from warnings import warn
 
 SUPPORTED_LOSS = ("SquaredError", "Logistic", "Exponential", "SquaredHinge")
-CLASSIFICATION_LOSS = SUPPORTED_LOSS[1], SUPPORTED_LOSS[2]
+CLASSIFICATION_LOSS = SUPPORTED_LOSS[1], SUPPORTED_LOSS[2], SUPPORTED_LOSS[3]
 SUPPORTED_PENALTY = ("L0", "L0L1", "L0L2")
 SUPPORTED_ALGORITHM = ("CD", "CDPSI")
 
@@ -162,6 +162,16 @@ def _fit_check(
             y[second_value] = 1.0
             if y.dtype != np.float64:
                 y = y.astype(float)
+
+        if loss == "Exponential":
+            unique_X_items = sorted(np.unique(X))
+
+            if (len(unique_X_items) != 2) or (unique_X_items[0] != 0) or (unique_X_items != 1):
+                raise ValueError(
+                        f"expected X matrix to only have 0 or 1 as its value per entry (Binary Classification, Exponential loss), "
+                        f"try applying thresholding to convert each column into several columns with only binary 0/1 features."
+                        f"if you don't want to do this, try using Logistic or SquaredHinge loss."
+                )
 
         if penalty == "L0":
             # Pure L0 is not supported for classification
