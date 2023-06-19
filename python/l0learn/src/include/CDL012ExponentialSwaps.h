@@ -77,9 +77,8 @@ FitResult<T> CDL012ExponentialSwaps<T>::_FitWithBounds() {
 
 template <class T>
 FitResult<T> CDL012ExponentialSwaps<T>::_Fit() {
-	// std::cout << "CDL012LogisticSwaps.cpp i'm in line 22\n";
-
 	auto result = CDL012Exponential<T>(*(this->X), this->y, this->P).Fit(); // result will be maintained till the end
+
 	this->b0 = result.b0; // Initialize from previous later....!
 	this->B = result.B;
 	arma::vec inverse_ExpyXB = result.inverse_ExpyXB; // Maintained throughout the algorithm
@@ -99,7 +98,6 @@ FitResult<T> CDL012ExponentialSwaps<T>::_Fit() {
 	std::size_t ll_max = std::min(50, (int) this->p); // consider set 50 to be a parameter
 	arma::uvec support_indices = arma::regspace<arma::uvec>(0, this->p - 1);
 	for (std::size_t t = 0; t < this->MaxNumSwaps; ++t) {
-		// std::cout << "Exponential Swaps is fitting!\n";
 		///////////////////////////////////////////////////// Sequential order
 		// std::vector<std::size_t> NnzIndices = nnzIndicies(this->B, this->NoSelectK);
 
@@ -216,6 +214,7 @@ FitResult<T> CDL012ExponentialSwaps<T>::_Fit() {
 
 		}
 
+    /* std::cout << "Finishing Exponential loss training\n"; */
 		if(!foundbetter) {
 			// Early exit to prevent looping
 			return result;

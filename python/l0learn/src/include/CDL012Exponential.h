@@ -210,7 +210,7 @@ FitResult<T> CDL012Exponential<T>::_Fit() {
 	this->Order.resize(std::min((int) (n_nonzero(this->B) + this->ScreenSize + this->NoSelectK), (int)(this->p)));
 
 	for (std::size_t t = 0; t < this->MaxIters; ++t) {
-		// std::cout << "at iteration " + std::to_string(t) + ", the loss is " + std::to_string(Objective()) + "\n";
+		/* std::cout << "at iteration " + std::to_string(t) + ", the loss is " + std::to_string(Objective()) + "\n"; */
 		this->Bprev = this->B;
 
 		if (this->intercept){
@@ -220,6 +220,7 @@ FitResult<T> CDL012Exponential<T>::_Fit() {
 			indices = (*(this->Xy_neg_indices))[-1];
 			// this->d_minus = arma::sum(this->inverse_ExpyXB.elem(indices)) / arma::sum(this->inverse_ExpyXB);
 			this->d_minus = arma::sum(this->inverse_ExpyXB.elem(indices)) / this->current_expo_loss;
+      /* std::cout << "d_minus is: " << this->d_minus << "\n"; */
 			const double partial_b0 = -0.5*std::log((1-this->d_minus)/this->d_minus);
 			this->b0 -= partial_b0;
 			this->inverse_ExpyXB %= arma::exp( partial_b0 * this->y);
