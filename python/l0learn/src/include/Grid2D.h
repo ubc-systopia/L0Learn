@@ -137,7 +137,7 @@ std::vector<std::vector<std::unique_ptr<FitResult<T>>>> Grid2D<T>::Fit() {
 			inverse_ExpyXB %= arma::exp( partial_b0 * *y);
 		}
 		PG.P.b0 = b0;
-		Xtrarma = arma::abs(- arma::trans(*y % inverse_ExpyXB) * *X).t(); // = gradient of logistic loss at zero
+		Xtrarma = arma::abs(- arma::trans(*y % inverse_ExpyXB) * *X).t(); // = gradient of exponential loss at zero
 	}
 
   else if (PG.P.Specs.SquaredHinge) {
