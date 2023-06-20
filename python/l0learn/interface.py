@@ -192,8 +192,12 @@ def _fit_check(
                 )
 
             penalty = "L0L2"
-            gamma_max = 1e-7
-            gamma_min = 1e-7
+            if loss == "Exponential":
+                gamma_max = 0
+                gamma_min = 0
+            else:
+                gamma_max = 1e-7
+                gamma_min = 1e-7
     elif penalty != "L0" and num_gamma == 1:
         warn(
             f"num_gamma set to 1 with {penalty} penalty. Only one {penalty[2:]} penalty value will be fit."
