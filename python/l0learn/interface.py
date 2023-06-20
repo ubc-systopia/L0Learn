@@ -173,6 +173,11 @@ def _fit_check(
                         f"if you don't want to do this, try using Logistic or SquaredHinge loss."
                 )
 
+            if penalty != "L0":
+                raise ValueError(
+                        f'when using exponential loss, only penalty="L0" is allowed'
+                )
+
         if penalty == "L0":
             # Pure L0 is not supported for classification
             # Below we add a small L2 component.
