@@ -191,9 +191,9 @@ def _fit_check(
                     f"L0 Penalty requires 'lambda_grid' to be a list of length 1, but got {lambda_grid}."
                 )
 
-        penalty = "L0L2"
-        gamma_max = 1e-7
-        gamma_min = 1e-7
+            penalty = "L0L2"
+            gamma_max = 1e-7
+            gamma_min = 1e-7
     elif penalty != "L0" and num_gamma == 1:
         warn(
             f"num_gamma set to 1 with {penalty} penalty. Only one {penalty[2:]} penalty value will be fit."
