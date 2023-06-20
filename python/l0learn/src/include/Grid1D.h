@@ -109,7 +109,6 @@ std::vector<std::unique_ptr<FitResult<T>>> Grid1D<T>::Fit() {
         Xtrarma = arma::abs(y->t() * *X).t();
       } // = gradient of exponential loss at zero}
       Lipconst = 1 + 2 * P.ModelParams[2];
-      std::cout << "exponential loss Lipconst is " << Lipconst << "\n";
     } else if (P.Specs.SquaredHinge) {
       if (!XtrAvailable) {
         // gradient of loss function at zero
@@ -136,8 +135,6 @@ std::vector<std::unique_ptr<FitResult<T>>> Grid1D<T>::Fit() {
     double lambdamax =
         ((ytXmax - P.ModelParams[1]) * (ytXmax - P.ModelParams[1])) /
         (2 * (Lipconst));
-    std::cout << "lambdamax: " << lambdamax << "\n";
-
     // Rcpp::Rcout << "lambdamax: " << lambdamax << "\n";
 
     if (!LambdaU) {
