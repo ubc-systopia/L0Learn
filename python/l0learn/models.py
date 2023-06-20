@@ -199,6 +199,50 @@ def logistic_loss(
 
     return log_loss + reg_loss
 
+def exponential_loss(
+    y_true: np.ndarray,
+    y_pred: np.ndarray,
+    coeffs: Optional[csc_matrix] = None,
+    l0: float = 0,
+    l1: float = 0,
+    l2: float = 0,
+    eps: float = 1e-15,
+) -> np.ndarray:
+    """
+    Calculates Logistic Loss of solution with optional regularization
+
+    Parameters
+    ----------
+    y_true : np.ndarray of shape (m, )
+    y_pred : np.ndarray of shape (m, ) or (m, k)
+    coeffs : np.ndarray of shape (p, k), optional
+    l0 : float or sequence of floats of shape (l)
+    l1 : float or sequence of floats of shape (l)
+    l2 : float or sequence of floats of shape (l)
+    eps: float, default=1e-15
+        Logistic loss is undefined for p=0 or p=1, so probabilities are clipped to max(eps, min(1 - eps, p)).
+
+
+    Returns
+    -------
+    exponential_loss : np.ndarray
+        Shape (,) if y_pred is 1D  or = (k,) if y_pred is 2D
+
+    """
+    # TODO: Check this formula. If there is an error here, there might be an error in the C++ code for Logistic.
+
+    reg_loss = 0
+    if coeffs is not None:
+        reg_loss = regularization_loss(coeffs=coeffs, l0=l0, l1=l1, l2=l2)
+
+    if y_pred.ndim == 2:
+        y_true = y_true[:, np.newaxis]
+
+    y_pred = np.clip(y_pred, eps, 1 - eps)
+
+    exp_loss = np.sqrt( 1 / y_pred - 1).sum()
+
+    return exp_loss + reg_loss
 
 def squared_hinge_loss(
     y_true: np.ndarray,
@@ -665,6 +709,15 @@ class FitModel:
                 l1=l1,
                 l2=l2,
             )
+        elif self.settings["loss"] == "Exponential":
+            score = exponential_loss(
+                y_true=y,
+                y_pred=predictions,
+                coeffs=coeffs,
+                l0=l0,
+                l1=l1,
+                l2=l2,
+            )
         else:
             score = squared_hinge_loss(
                 y_true=y,
@@ -732,6 +785,8 @@ class FitModel:
 
         if self.settings["loss"] == "Logistic":
             return 1 / (1 + np.exp(-activations))
+        elif self.settings["loss"] == "Exponential":
+            return 1 / (1 + np.exp(- 2 * activations))
         else:
             return activations
 
