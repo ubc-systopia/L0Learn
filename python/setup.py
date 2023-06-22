@@ -40,7 +40,7 @@ def read(*names, **kwargs):
         return fh.read()
 
 
-def write_version_py(filename: str = f'{PACKAGE_NAME}/version.py') -> None:
+def write_version_py(filename: str = f'l0learn/version.py') -> None:
     """Write package version to version.py.
     This will ensure that the version in version.py is in sync with us.
     Parameters
