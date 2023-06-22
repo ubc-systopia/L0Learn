@@ -20,7 +20,7 @@ from os.path import dirname
 from os.path import join
 from distutils.sysconfig import get_python_inc, get_config_var
 
-PACKAGE_NAME = 'l0learn'
+PACKAGE_NAME = 'fastSparse'
 
 MAJOR = 0
 MINOR = 1
