@@ -290,7 +290,7 @@ def squared_hinge_loss(
 
 @dataclass(frozen=True, repr=False, eq=False)
 class FitModel:
-    """FitModel returned by calling l0learn.fit(...)"""
+    """FitModel returned by calling fastsparsegams.fit(...)"""
 
     settings: Dict[str, Any]
     lambda_0: List[List[float]] = field(repr=False)
@@ -458,12 +458,12 @@ class FitModel:
         lambda_0 : float, optional
             If provided, designates which solutions will be returned based of `lambda_0` and `gamma`
             See FitModel.coeff for details on `lambda_0` specifications
-            :meth:`l0learn.models.FitModel.coeff`
+            :meth:`fastsparsegams.models.FitModel.coeff`
 
         gamma : float, optional
             If provided, designates which solutions will be returned based of `gamma` and `lambda_0`
             See FitModel.coeff for details on `lambda_0` specifications
-            :meth:`l0learn.models.FitModel.coeff`
+            :meth:`fastsparsegams.models.FitModel.coeff`
 
         Returns
         -------
@@ -642,17 +642,17 @@ class FitModel:
             Observations or ground truths of `y` which will be compared with `y_hat`
 
             See FitModel.predict for details on predictions
-            :meth:`l0learn.models.FitModel.predict`
+            :meth:`fastsparsegams.models.FitModel.predict`
 
         lambda_0 : float, optional
             If provided, designates which solutions will be returned based of `lambda_0` and `gamma`
             See FitModel.coeff for details on `lambda_0` specifications
-            :meth:`l0learn.models.FitModel.coeff`
+            :meth:`fastsparsegams.models.FitModel.coeff`
 
         gamma : float, optional
             If provided, designates which solutions will be returned based of `gamma` and `lambda_0`
             See FitModel.coeff for details on `lambda_0` specifications
-            :meth:`l0learn.models.FitModel.coeff`
+            :meth:`fastsparsegams.models.FitModel.coeff`
 
         training: bool, default False
             Whether or not to include regularization losses when calculating model performance.
@@ -665,7 +665,7 @@ class FitModel:
             returned as a Pandas DataFrame similar to FitModel.characteristics, but with an additional column for score
 
             See FitModel.characteristics for details on characteristics
-            :meth:`l0learn.models.FitModel.characteristics`
+            :meth:`fastsparsegams.models.FitModel.characteristics`
 
         Returns
         -------
@@ -754,13 +754,13 @@ class FitModel:
             Which `lambda_0` value to use for predictions
 
             See FitModel.coeff for details on `lambda_0` specifications
-            :meth:`l0learn.models.FitModel.coeff`
+            :meth:`fastsparsegams.models.FitModel.coeff`
 
         gamma : float, optional
             Which gamma value to use for predictions
 
             See FitModel.coeff for details on `lambda_0` specifications
-            :meth:`l0learn.models.FitModel.coeff`
+            :meth:`fastsparsegams.models.FitModel.coeff`
 
         Returns
         -------

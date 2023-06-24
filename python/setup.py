@@ -20,7 +20,7 @@ from os.path import dirname
 from os.path import join
 from distutils.sysconfig import get_python_inc, get_config_var
 
-PACKAGE_NAME = 'fastSparseGAMs'
+PACKAGE_NAME = 'fastsparsegams'
 
 MAJOR = 0
 MINOR = 1
@@ -40,7 +40,7 @@ def read(*names, **kwargs):
         return fh.read()
 
 
-def write_version_py(filename: str = f'l0learn/version.py') -> None:
+def write_version_py(filename: str = f'{PACKAGE_NAME}/version.py') -> None:
     """Write package version to version.py.
     This will ensure that the version in version.py is in sync with us.
     Parameters
@@ -85,7 +85,7 @@ if __name__ == '__main__':
                         "scikit-build",
                         "cmake",
                         "ninja"],
-        cmake_install_dir="l0learn",
+        cmake_install_dir="fastsparsegams",
         cmake_args=[
             f"-DL0LEARN_VERSION_INFO:STRING={VERSION}",
             f"-DPython3_EXECUTABLE={sys.executable}",

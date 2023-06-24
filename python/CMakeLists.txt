@@ -6,7 +6,7 @@ IF (NOT DEFINED L0LEARN_VERSION_INFO)
     SET(L0LEARN_VERSION_INFO "0.0.0")
 ENDIF ()
 
-SET(MODNAME "l0learn")
+SET(MODNAME "fastsparsegams")
 
 PROJECT(
         ${MODNAME}
@@ -28,13 +28,13 @@ if($ENV{CIBUILDWHEEL})
     target_compile_definitions(armadillo PRIVATE -DARMA_USE_BLAS)
 endif()
 
-INCLUDE_DIRECTORIES(l0learn)
-INCLUDE_DIRECTORIES(l0learn/src)
-INCLUDE_DIRECTORIES(l0learn/src/include)
+INCLUDE_DIRECTORIES(fastsparsegams)
+INCLUDE_DIRECTORIES(fastsparsegams/src)
+INCLUDE_DIRECTORIES(fastsparsegams/src/include)
 
 pybind11_add_module(${MODNAME} MODULE
-        l0learn/pyl0learn.cpp
-        l0learn/src/Normalize.cpp)
+        fastsparsegams/pyl0learn.cpp
+        fastsparsegams/src/Normalize.cpp)
 
 TARGET_LINK_LIBRARIES(${MODNAME} PRIVATE carma::carma)
 TARGET_LINK_LIBRARIES(${MODNAME} PRIVATE armadillo)

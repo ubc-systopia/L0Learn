@@ -1,7 +1,7 @@
 from typing import Union, List, Sequence, Dict, Any, Optional
 
 from .models import FitModel, CVFitModel
-from .l0learn import (
+from .fastsparsegams import (
     _L0LearnFit_sparse,
     _L0LearnFit_dense,
     _L0LearnCV_dense,
@@ -500,17 +500,17 @@ def fit(
 
     Returns
     -------
-    fit_model : l0learn.models.FitModel
+    fit_model : fastsparsegams.models.FitModel
         FitModel instance containing all relevant information from the solution path.
 
     See Also
     -------
-    l0learn.cvfit
-    l0learn.models.FitModel
+    fastsparsegams.cvfit
+    fastsparsegams.models.FitModel
 
     Examples
     --------
-    >>>fit_model = l0learn.fit(X, y, penalty="L0", max_support_size=20)
+    >>>fit_model = fastsparsegams.fit(X, y, penalty="L0", max_support_size=20)
     """
     check = _fit_check(
         X=X,
@@ -798,17 +798,17 @@ def cvfit(
 
     Returns
     -------
-    fit_model : l0learn.models.FitModel
+    fit_model : fastsparsegams.models.FitModel
         FitModel instance containing all relevant information from the solution path.
 
     See Also
     -------
-    l0learn.cvfit
-    l0learn.models.FitModel
+    fastsparsegams.cvfit
+    fastsparsegams.models.FitModel
 
     Examples
     --------
-    >>>fit_model = l0learn.fit(X, y, penalty="L0", max_support_size=20)
+    >>>fit_model = fastsparsegams.fit(X, y, penalty="L0", max_support_size=20)
     """
 
     check = _fit_check(
