@@ -1,6 +1,6 @@
 # fastSparse
 
-![example workflow](https://github.com/tynanseltzer/L0Learn/actions/workflows/python.yml/badge.svg)
+<!-- ![example workflow](https://github.com/tynanseltzer/L0Learn/actions/workflows/python.yml/badge.svg) -->
 
 ## Introduction
 fastSparseGAMs is a Python package that offers an efficient framework for solving L0-regularized learning problems in sparse generalized additive models (GAMs). Leveraging the [L0Learn](https://github.com/TNonet/L0Learn) package, this package introduces two novel algorithms, namely quadratic cuts and dynamic feature ordering, to deliver faster computational speed. Additionally, it comes with a new loss function (exponential loss) for classification.
@@ -15,7 +15,12 @@ pip install fastsparsegams
 ```
 
 ## Documentation
-fastSparseGAMs is developed upon the framework of L0Learn, featuring faster and novel algorithms implemented internally. We do not alter the external Python interface functions. Therefore, please see L0Learn's python documentation available [here](https://tnonet.github.io/L0Learn/tutorial.html) for the detailed API documentation.
+An example on how to use `fastSparseGAMs` is provided at this [tutorial page](https://github.com/tynanseltzer/L0Learn/python/tutorial_example/example.py).
+
+fastSparseGAMs is developed upon the framework of L0Learn, featuring faster and novel algorithms implemented internally.
+We do not alter the external Python interface functions. 
+Therefore, please see L0Learn's python documentation available [here](https://tnonet.github.io/L0Learn/tutorial.html) for the detailed API documentation.
+The external function usage is almost idential to L0Learn's API except replacing the module name `l0learn` with `fastsparsegams`.
 
 # Source Code and Installing from Source
 Alternatively, `fastSparseGAMs` can be build from source
