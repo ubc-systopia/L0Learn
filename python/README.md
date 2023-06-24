@@ -1,37 +1,26 @@
-# l0learn: Fast Best Subset Selection 
+# fastSparse
 
-![example workflow](https://github.com/TNonet/L0Learn/actions/workflows/python.yml/badge.svg)
-
-### Hussein Hazimeh, Rahul Mazumder, and Tim Nonet
-### Massachusetts Institute of Technology
+![example workflow](https://github.com/tynanseltzer/L0Learn/actions/workflows/python.yml/badge.svg)
 
 ## Introduction
-L0Learn is a highly efficient framework for solving L0-regularized learning problems. It can (approximately) solve the following three problems, where the empirical loss is penalized by combinations of the L0, L1, and L2 norms:
+fastSparseGAMs is a Python package that offers an efficient framework for solving L0-regularized learning problems in sparse generalized additive models (GAMs). Leveraging the [L0Learn](https://github.com/TNonet/L0Learn) package, this package introduces two novel algorithms, namely quadratic cuts and dynamic feature ordering, to deliver faster computational speed. Additionally, it comes with a new loss function (exponential loss) for classification.
 
-<img src="https://github.com/TNonet/L0Learn/blob/master/misc/eqs.png" width = 450>
-
-We support both regression (using squared error loss) and classification (using logistic or squared hinge loss). Optimization is done using coordinate descent and local combinatorial search over a grid of regularization parameter(s) values. Several  computational tricks and heuristics are used to speed up the algorithms and improve the solution quality. These heuristics include warm starts, active set convergence, correlation screening, greedy cycling order, and efficient methods for updating the residuals through exploiting sparsity and problem dimensions. Moreover, we employed a new computationally efficient method for dynamically selecting the regularization parameter λ in the path. We describe the details of the algorithms in our paper: *Fast Best Subset Selection: Coordinate Descent and Local Combinatorial Optimization Algorithms* ([link](https://pubsonline.informs.org/doi/10.1287/opre.2019.1919)).
-
-The toolkit is implemented in C++11 and can often run faster than popular sparse learning toolkits (see our experiments in the paper above). We also provide an easy-to-use R interface; see the section below for installation and usage of the R package.
-
-**NEW: Version 2 (03/2021) adds support for sparse matrices and box constraints on the coefficients.**
+<img src="https://github.com/tynanseltzer/L0Learn/blob/master/misc/eqs.png" width = 450>
 
 ## Package Installation
-`l0learn` comes pre-packaged with a version of [Amardillo](http://arma.sourceforge.net/download.html)
-`l0learn` Currently is only supported on Linux and MacOS. Windows support is an active area of development.
 
-The latest version (v2.0.3) can be installed from pip as follows:
+The latest version can be installed from pip as follows:
 ```bash
-pip install l0learn
+pip install fastsparsegams
 ```
 
 ## Documentation
-Documentation can be found [here](https://tnonet.github.io/L0Learn/tutorial.html)
+fastSparseGAMs is developed upon the framework of L0Learn, featuring faster and novel algorithms implemented internally. We do not alter the external Python interface functions. Therefore, please see L0Learn's python documentation available [here](https://tnonet.github.io/L0Learn/tutorial.html) for the detailed API documentation.
 
 # Source Code and Installing from Source
-Alternatively, `l0learn` can be build from source
+Alternatively, `fastSparseGAMs` can be build from source
 ```bash
-git clone https://github.com/TNonet/L0Learn.git
+git clone https://github.com/tynanseltzer/L0Learn.git
 cd python
 ```
 
@@ -45,28 +34,22 @@ To test, run the following command:
 python -m pytest
 ```
 
-# Change Log
-L0Learn's changelog can be accessed from [here](https://github.com/hazimehh/L0Learn/blob/master/ChangeLog).
-
-
-## Usage
-For a tutorial, please refer to l0learn's Vignette(Link to be added). For a detailed description of the API, check the Documentation(link to be added).
-
-## FAQ
-#### Which penalty to use?
-Pure L0 regularization can overfit when the signal strength in the data is relatively low. Adding L2 regularization can alleviate this problem and lead to competitive models (see the experiments in our paper). Thus, in practice, **we strongly  recommend using the L0L2 penalty**. Ideally, the parameter gamma (for L2 regularization) should be tuned over a sufficiently large interval, and this can be performed using L0Learn's built-in [cross-validation method](https://cran.r-project.org/web/packages/L0Learn/vignettes/L0Learn-vignette.html#cross-validation).
-
-#### Which algorithm to use?
-By default, L0Learn uses a coordinate descent-based algorithm, which achieves competitive run times compared to popular sparse learning toolkits. This can work well for many applications. We also offer a local search algorithm which is guarantteed to return higher quality solutions, at the expense of an increase in the run time. We recommend using the local search algorithm if your problem has highly correlated features or the number of samples is much smaller than the number of features---see the [local search section of the Vignette](https://cran.r-project.org/web/packages/L0Learn/vignettes/L0Learn-vignette.html#higher-quality_solutions_using_local_search) for how to use this algorithm.
-
-#### How to certify optimality?
-While for many challenging statistical instances L0Learn leads to optimal solutions, it cannot provide certificates of optimality. Such certificates can be provided via Integer Programming. Our toolkit [L0BnB](https://github.com/alisaab/l0bnb) is a scalable integer programming framework for L0-regularized regression, which can provide such certificates and potentially improve upon the solutions of L0Learn (if they are sub-optimal). We recommend using L0Learn first to obtain a candidtate solution (or a pool of solutions) and then checking optimality using L0BnB.
-
-
-## Citing L0Learn
-If you find L0Learn useful in your research, please consider citing the following two papers.
+## Citing fastSparseGAMs
+If you find fastSparseGAMs useful in your research, please consider citing the following papers.
 
 **Paper 1:**
+```
+@inproceedings{liu2022fast,
+  title={Fast Sparse Classification for Generalized Linear and Additive Models},
+  author={Liu, Jiachang and Zhong, Chudi and Seltzer, Margo and Rudin, Cynthia},
+  booktitle={International Conference on Artificial Intelligence and Statistics},
+  pages={9304--9333},
+  year={2022},
+  organization={PMLR}
+}
+```
+
+**Paper 2:**
 ```
 @article{doi:10.1287/opre.2019.1919,
 author = {Hazimeh, Hussein and Mazumder, Rahul},
@@ -82,7 +65,7 @@ eprint = {https://doi.org/10.1287/opre.2019.1919}
 }
 ```
 
-**Paper 2:**
+**Paper 3:**
 ```
 @article{JMLR:v22:19-1049,
   author  = {Antoine Dedieu and Hussein Hazimeh and Rahul Mazumder},
@@ -95,3 +78,14 @@ eprint = {https://doi.org/10.1287/opre.2019.1919}
   url     = {http://jmlr.org/papers/v22/19-1049.html}
 }
 ```
+
+**Paper 4:**
+```
+@article{hazimeh2022l0learn,
+      title={L0Learn: A Scalable Package for Sparse Learning using L0 Regularization}, 
+      author={Hussein Hazimeh and Rahul Mazumder and Tim Nonet},
+      year={2022},
+      eprint={2202.04820},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
