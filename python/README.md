@@ -15,10 +15,10 @@ pip install fastsparsegams
 ```
 
 ## Documentation
-An example on how to use `fastSparseGAMs` is provided at this [tutorial page](https://github.com/tynanseltzer/L0Learn/python/tutorial_example/example.py).
+An example on how to use `fastSparseGAMs` is provided at this [tutorial page](https://github.com/tynanseltzer/L0Learn/blob/master/python/tutorial_example/example.py).
 
 fastSparseGAMs is developed upon the framework of L0Learn, featuring faster and novel algorithms implemented internally.
-We do not alter the external Python interface functions. 
+We do not alter the external Python interface functions.
 Therefore, please see L0Learn's python documentation available [here](https://tnonet.github.io/L0Learn/tutorial.html) for the detailed API documentation.
 The external function usage is almost idential to L0Learn's API except replacing the module name `l0learn` with `fastsparsegams`.
 
@@ -31,7 +31,7 @@ cd python
 
 To install, ensure the proper packages are installed from `pyproject.toml` build from source with the following:
 ```bash
-pip install ".[test]" 
+pip install ".[test]"
 ```
 
 To test, run the following command:
@@ -87,7 +87,7 @@ eprint = {https://doi.org/10.1287/opre.2019.1919}
 **Paper 4:**
 ```
 @article{hazimeh2022l0learn,
-      title={L0Learn: A Scalable Package for Sparse Learning using L0 Regularization}, 
+      title={L0Learn: A Scalable Package for Sparse Learning using L0 Regularization},
       author={Hussein Hazimeh and Rahul Mazumder and Tim Nonet},
       year={2022},
       eprint={2202.04820},
