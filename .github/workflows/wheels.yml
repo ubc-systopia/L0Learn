@@ -15,8 +15,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-10.15] # windows-2019, ]
-        python-version: [3.7, 3.8, 3.9, 3.10, 3.11, 3.12]
+        os: [ubuntu-latest] #, macOS-10.15] # windows-2019, ]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
 
     steps:
       - name: Checkout l0learn
@@ -35,7 +35,7 @@ jobs:
       - name: Build wheels
         run: |
           cd python
-          python -m cibuildwheel --output-dir l0learn-wheelhouse
+          python -m cibuildwheel
         env:
           CIBW_SKIP: pp* *-win32 *-manylinux_i686 *musllinux*
 
