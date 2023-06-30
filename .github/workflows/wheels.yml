@@ -35,15 +35,15 @@ jobs:
       - name: Build wheels
         run: |
           cd python
-          python -m cibuildwheel
+          python -m cibuildwheel --output-dir l0learn-wheelhouse
         env:
           CIBW_SKIP: pp* *-win32 *-manylinux_i686 *musllinux*
 
       - name: Upload wheels
         uses: actions/upload-artifact@v2
         with:
-          name: wheels
-          path: ./wheelhouse/*.whl
+          name: l0learn-wheelhouse
+          path: python/l0learn-wheelhouse/
 
 
 
