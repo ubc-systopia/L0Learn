@@ -59,10 +59,12 @@ jobs:
       - name: Build wheels
         run: |
           cd python
+          python_version=${{ matrix.python-version }}
+          python_version=${python_version//./}
           python -m cibuildwheel --output-dir l0learn-wheelhouse
-        env:
-          CIBW_SKIP: pp* *-win32 *-manylinux_i686 *musllinux*
-          CIBW_BUILD: cp${{ matrix.python-version.replace('.', '') }}-*
+          env:
+            CIBW_SKIP: pp* *-win32 *-manylinux_i686 *musllinux*
+            CIBW_BUILD: "cp${python_version}-*"
 
       - name: Upload wheels
         uses: actions/upload-artifact@v2
