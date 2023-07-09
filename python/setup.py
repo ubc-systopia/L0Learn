@@ -24,7 +24,7 @@ PACKAGE_NAME = 'fastsparsegams'
 
 MAJOR = 0
 MINOR = 1
-MICRO = 1
+MICRO = 2
 DEVELOPMENT = False
 
 VERSION = f'{MAJOR}.{MINOR}.{MICRO}'
