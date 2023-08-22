@@ -25,7 +25,7 @@ The external function usage is almost idential to L0Learn's API except replacing
 # Source Code and Installing from Source
 Alternatively, `fastSparseGAMs` can be build from source
 ```bash
-git clone https://github.com/tynanseltzer/L0Learn.git
+git clone --recurse-submodules https://github.com/tynanseltzer/L0Learn.git
 cd python
 ```
 
