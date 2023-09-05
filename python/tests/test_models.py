@@ -4,7 +4,7 @@ import pytest
 from hypothesis.strategies import floats
 from scipy.sparse import csc_matrix, rand
 
-from l0learn.models import (
+from fastsparsegams.models import (
     FitModel,
     CVFitModel,
     regularization_loss,

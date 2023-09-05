@@ -2,11 +2,12 @@ import pytest
 import numpy as np
 from scipy.sparse import csc_matrix
 
-import l0learn
+import fastsparsegams
 
 N = 50
 
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_X_sparse_support(f):
     x = np.random.random(size=(N, N))
     x_sparse = csc_matrix(x)
@@ -22,10 +23,10 @@ def test_X_sparse_support(f):
         "A String",  # Wrong Type
         np.random.random(size=(N, N)).astype(complex),  # Wrong dtype
         np.random.random(size=(N, N)).astype(int),  # Wrong dtype
-        np.random.random(size=(0, N)), # degenerate 2D array
+        np.random.random(size=(0, N)),  # degenerate 2D array
     ],
 )
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_X_dense_bad_checks(f, x):
     # Check size of matrix X
     y = np.random.random(size=(N,))
@@ -42,7 +43,7 @@ def test_X_dense_bad_checks(f, x):
         np.random.random(size=(N + 1)),
     ],
 )  # wrong size
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_y_bad_checks(f, y):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -50,7 +51,7 @@ def test_y_bad_checks(f, y):
         f(x, y)
 
 
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_loss_bad_checks(f):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -59,8 +60,8 @@ def test_loss_bad_checks(f):
         f(x, y, loss="NOT A LOSS")
 
 
-@pytest.mark.parametrize("loss", l0learn.interface.SUPPORTED_LOSS)
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("loss", fastsparsegams.interface.SUPPORTED_LOSS)
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_loss_good_checks(f, loss):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -68,7 +69,7 @@ def test_loss_good_checks(f, loss):
     _ = f(x, y, loss=loss)
 
 
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_penalty_bad_checks(f):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -77,8 +78,8 @@ def test_penalty_bad_checks(f):
         f(x, y, penalty="L0LX")
 
 
-@pytest.mark.parametrize("penalty", l0learn.interface.SUPPORTED_PENALTY)
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("penalty", fastsparsegams.interface.SUPPORTED_PENALTY)
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_penalty_good_checks(f, penalty):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -86,7 +87,7 @@ def test_penalty_good_checks(f, penalty):
     _ = f(x, y, penalty=penalty)
 
 
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_algorithm_bad_checks(f):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -95,8 +96,8 @@ def test_algorithm_bad_checks(f):
         f(x, y, algorithm="NOT CD or CDPSI")
 
 
-@pytest.mark.parametrize("algorithm", l0learn.interface.SUPPORTED_ALGORITHM)
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("algorithm", fastsparsegams.interface.SUPPORTED_ALGORITHM)
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_algorithm_good_checks(f, algorithm):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -105,7 +106,7 @@ def test_algorithm_good_checks(f, algorithm):
 
 
 @pytest.mark.parametrize("max_support_size", [-1, 2.0])
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_max_support_size_bad_checks(f, max_support_size):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -116,7 +117,7 @@ def test_max_support_size_bad_checks(f, max_support_size):
 
 
 @pytest.mark.parametrize("max_support_size", [N, N - 1, N + 1])
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_max_support_size_good_checks(f, max_support_size):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -124,7 +125,7 @@ def test_max_support_size_good_checks(f, max_support_size):
     _ = f(x, y, max_support_size=max_support_size)
 
 
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_gamma_max_bad_checks(f):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -134,7 +135,7 @@ def test_gamma_max_bad_checks(f):
         _ = f(x, y, gamma_max=-1)
 
 
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_gamma_min_bad_checks(f):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -147,7 +148,7 @@ def test_gamma_min_bad_checks(f):
         _ = f(x, y, gamma_min=-1)
 
 
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_paritial_sort_bad_checks(f):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -158,7 +159,7 @@ def test_paritial_sort_bad_checks(f):
 
 
 @pytest.mark.parametrize("max_iter", [1.0, 0])
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_max_iter_bad_checks(f, max_iter):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -169,7 +170,7 @@ def test_max_iter_bad_checks(f, max_iter):
 
 
 @pytest.mark.parametrize("rtol", [1.0, -0.1])
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_rtol_bad_checks(f, rtol):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -179,7 +180,7 @@ def test_rtol_bad_checks(f, rtol):
         _ = f(x, y, rtol=rtol)
 
 
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_atol_bad_checks(f):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -189,7 +190,7 @@ def test_atol_bad_checks(f):
         _ = f(x, y, atol=-1)
 
 
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_active_set_sort_bad_checks(f):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -200,7 +201,7 @@ def test_active_set_sort_bad_checks(f):
 
 
 @pytest.mark.parametrize("active_set_num", [1.3, 0])
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_active_set_num_bad_checks(f, active_set_num):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -211,7 +212,7 @@ def test_active_set_num_bad_checks(f, active_set_num):
 
 
 @pytest.mark.parametrize("max_swaps", [0, 4.5])
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_max_swaps_bad_checks(f, max_swaps):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -222,7 +223,7 @@ def test_max_swaps_bad_checks(f, max_swaps):
 
 
 @pytest.mark.parametrize("scale_down_factor", [-1, 2])
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_scale_down_factor_bad_checks(f, scale_down_factor):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -233,7 +234,7 @@ def test_scale_down_factor_bad_checks(f, scale_down_factor):
 
 
 @pytest.mark.parametrize("screen_size", [-1, 2.0])
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_screen_size_bad_checks(f, screen_size):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -244,7 +245,7 @@ def test_screen_size_bad_checks(f, screen_size):
 
 
 @pytest.mark.parametrize("exclude_first_k", [-1, 2.0, N + 1])
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_exclude_first_k_bad_checks(f, exclude_first_k):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -254,7 +255,7 @@ def test_exclude_first_k_bad_checks(f, exclude_first_k):
         _ = f(x, y, exclude_first_k=exclude_first_k)
 
 
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_intercept_bad_checks(f):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -264,8 +265,8 @@ def test_intercept_bad_checks(f):
         _ = f(x, y, intercept="NOT A BOOL")
 
 
-@pytest.mark.parametrize("loss", l0learn.interface.CLASSIFICATION_LOSS)
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("loss", fastsparsegams.interface.CLASSIFICATION_LOSS)
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_classification_loss_bad_y_checks(f, loss):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -277,8 +278,8 @@ def test_classification_loss_bad_y_checks(f, loss):
         _ = f(x, y, loss=loss)
 
 
-@pytest.mark.parametrize("loss", l0learn.interface.CLASSIFICATION_LOSS)
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("loss", fastsparsegams.interface.CLASSIFICATION_LOSS)
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_classification_loss_bad_lambda_grid_L0_checks(f, loss):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -307,7 +308,7 @@ def test_classification_loss_bad_lambda_grid_L0_checks(f, loss):
     )
 
 
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_bad_lambda_grid_L0_checks(f):
     # Check size of matrix X
     x = np.random.random(size=(N, N))
@@ -323,7 +324,7 @@ def test_bad_lambda_grid_L0_checks(f):
 
 
 @pytest.mark.parametrize("penalty", ["L0L1", "L0L2"])
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_regression_loss_bad_num_gamma_L0_checks(f, penalty):
     x = np.random.random(size=(N, N))
     y = np.random.random(size=N)
@@ -339,7 +340,7 @@ def test_regression_loss_bad_num_gamma_L0_checks(f, penalty):
     assert len(wrn) == 0
 
 
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_auto_lambda_bad_checks(f):
     x = np.random.random(size=(N, N))
     y = np.random.random(size=N)
@@ -363,7 +364,7 @@ def test_auto_lambda_bad_checks(f):
 
 
 @pytest.mark.parametrize("penalty", ["L0L1", "L0L2"])
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_lambda_grid_bad_over_defined_checks(f, penalty):
     x = np.random.random(size=(N, N))
     y = np.random.random(size=N)
@@ -400,7 +401,7 @@ def test_lambda_grid_bad_over_defined_checks(f, penalty):
         ("L0", [[10, 11]]),
     ],
 )
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_lambda_grid_bad_checks(f, penalty_lambda_grid):
     penalty, lambda_grid = penalty_lambda_grid
     x = np.random.random(size=(N, N))
@@ -434,7 +435,7 @@ def test_lambda_grid_bad_checks(f, penalty_lambda_grid):
         (np.zeros(N), np.zeros(N)),
     ],
 )
-@pytest.mark.parametrize("f", [l0learn.fit, l0learn.cvfit])
+@pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_with_bounds_bad_checks(f, bounds):
     lows, highs = bounds
 
@@ -451,4 +452,4 @@ def test_cvfit_num_folds_bad_check(num_folds):
     y = np.random.random(size=N)
 
     with pytest.raises(ValueError):
-        _ = l0learn.cvfit(x, y, num_folds=num_folds)
+        _ = fastsparsegams.cvfit(x, y, num_folds=num_folds)
