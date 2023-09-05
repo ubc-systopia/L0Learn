@@ -342,12 +342,12 @@ def test_regression_loss_bad_num_gamma_L0_checks(f, penalty):
     with pytest.warns(None) as wrn:
         _ = f(x, y, loss="SquaredError", penalty=penalty, num_gamma=1, num_lambda=10)
 
-    assert len(wrn) == 2
+    assert len(wrn) == 1
 
     with pytest.warns(None) as wrn:
         _ = f(x, y, loss="SquaredError", penalty=penalty, num_gamma=2, num_lambda=10)
 
-    assert len(wrn) == 1
+    assert len(wrn) == 0
 
 
 @pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
