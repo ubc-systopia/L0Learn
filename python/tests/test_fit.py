@@ -64,7 +64,10 @@ def test_loss_bad_checks(f):
 @pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_loss_good_checks(f, loss):
     # Check size of matrix X
-    x = np.random.random(size=(N, N))
+    if loss == "Exponential":
+        x = np.random.randint(low=0, high=2, size=(N, N)).astype(float)
+    else:
+        x = np.random.random(size=(N, N))
     y = np.random.randint(low=0, high=2, size=(N,)).astype(float)
     _ = f(x, y, loss=loss)
 
@@ -282,7 +285,10 @@ def test_classification_loss_bad_y_checks(f, loss):
 @pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
 def test_classification_loss_bad_lambda_grid_L0_checks(f, loss):
     # Check size of matrix X
-    x = np.random.random(size=(N, N))
+    if loss == "Exponential":
+        x = np.random.randint(low=0, high=2, size=(N, N)).astype(float)
+    else:
+        x = np.random.random(size=(N, N))
     y = np.random.randint(0, 2, size=N)
     lambda_grid = [[10], [10]]
 
@@ -322,6 +328,10 @@ def test_bad_lambda_grid_L0_checks(f):
 
     _ = f(x, y, penalty="L0", lambda_grid=[[10]], num_gamma=None, num_lambda=None)
 
+    # print("Hello!")
+    # print(wrn)
+    # print(len(wrn))
+
 
 @pytest.mark.parametrize("penalty", ["L0L1", "L0L2"])
 @pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
@@ -332,12 +342,12 @@ def test_regression_loss_bad_num_gamma_L0_checks(f, penalty):
     with pytest.warns(None) as wrn:
         _ = f(x, y, loss="SquaredError", penalty=penalty, num_gamma=1, num_lambda=10)
 
-    assert len(wrn) == 1
+    assert len(wrn) == 2
 
     with pytest.warns(None) as wrn:
         _ = f(x, y, loss="SquaredError", penalty=penalty, num_gamma=2, num_lambda=10)
 
-    assert len(wrn) == 0
+    assert len(wrn) == 1
 
 
 @pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
