@@ -23,8 +23,8 @@ from distutils.sysconfig import get_python_inc, get_config_var
 PACKAGE_NAME = 'fastsparsegams'
 
 MAJOR = 0
-MINOR = 1
-MICRO = 2
+MINOR = 2
+MICRO = 0
 DEVELOPMENT = False
 
 VERSION = f'{MAJOR}.{MINOR}.{MICRO}'

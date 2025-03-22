@@ -17,6 +17,7 @@ config.status
 debug_log.ipynb
 tests/profile/
 .*idea
+python/_skbuild
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
