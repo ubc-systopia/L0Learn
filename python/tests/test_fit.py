@@ -339,15 +339,19 @@ def test_regression_loss_bad_num_gamma_L0_checks(f, penalty):
     x = np.random.random(size=(N, N))
     y = np.random.random(size=N)
 
-    with pytest.warns(None) as wrn:
+    # with pytest.warns(None) as wrn:
+    with pytest.warns(UserWarning) as wrn:
         _ = f(x, y, loss="SquaredError", penalty=penalty, num_gamma=1, num_lambda=10)
 
     assert len(wrn) == 1
 
-    with pytest.warns(None) as wrn:
+    # For the second case, we expect no warnings, so we'll use a different approach
+    import warnings
+    with warnings.catch_warnings(record=True) as wrn:
+        warnings.simplefilter("always")  # Ensure all warnings are captured
         _ = f(x, y, loss="SquaredError", penalty=penalty, num_gamma=2, num_lambda=10)
 
-    assert len(wrn) == 0
+    assert len(wrn) == 0  # Verify no warnings were emitted
 
 
 @pytest.mark.parametrize("f", [fastsparsegams.fit, fastsparsegams.cvfit])
