@@ -22,17 +22,10 @@ ADD_SUBDIRECTORY(external/armadillo-code)
 ADD_SUBDIRECTORY(external/carma)
 
 # Add Armadillo and pybind11
-if($ENV{CIBUILDWHEEL} OR DEFINED ENV{CI})
+if($ENV{CIBUILDWHEEL})
     set(ALLOW_OPENBLAS_MACOS ON CACHE BOOL "Allow detection of OpenBLAS on macOS" FORCE)
     target_compile_definitions(armadillo PRIVATE -DARMA_USE_LAPACK)
     target_compile_definitions(armadillo PRIVATE -DARMA_USE_BLAS)
-endif()
-
-# Ensure Armadillo can find BLAS and LAPACK
-if(UNIX AND NOT APPLE)
-    find_package(BLAS REQUIRED)
-    find_package(LAPACK REQUIRED)
-    target_link_libraries(armadillo PRIVATE ${BLAS_LIBRARIES} ${LAPACK_LIBRARIES})
 endif()
 
 INCLUDE_DIRECTORIES(fastsparsegams)
