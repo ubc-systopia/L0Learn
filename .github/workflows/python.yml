@@ -50,6 +50,10 @@ jobs:
 
       - name: install-dependencies
         run: ${{ matrix.INSTALL_DEPS }}
+        
+      - name: Make install script executable
+        run: |
+          chmod +x scripts/install_linux_libs.sh
 
       - name: Install L0Learn
         run: |
@@ -92,4 +96,3 @@ jobs:
         run: coveralls --service=github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
