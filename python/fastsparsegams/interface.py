@@ -11,6 +11,10 @@ from scipy.sparse import csc_matrix
 import numpy as np
 from warnings import warn
 
+# Compatibility with older versions of numpy
+if not hasattr(np, 'product'):
+    np.product = np.prod
+
 SUPPORTED_LOSS = ("SquaredError", "Logistic", "Exponential", "SquaredHinge")
 CLASSIFICATION_LOSS = SUPPORTED_LOSS[1], SUPPORTED_LOSS[2], SUPPORTED_LOSS[3]
 SUPPORTED_PENALTY = ("L0", "L0L1", "L0L2")
