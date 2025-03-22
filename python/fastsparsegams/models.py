@@ -443,7 +443,10 @@ class FitModel:
                 intercepts = [self.intercepts[gamma_index][lambda_index]]
 
         if include_intercept:
-            solutions = csc_matrix(vstack([intercepts[0], solutions]))
+                # Convert intercepts[0] (which is a list) to a row matrix before stacking
+                intercept_row = np.array(intercepts[0]).reshape(1, -1)
+
+                solutions = csc_matrix(vstack([intercept_row, solutions]))
 
         return solutions
 
