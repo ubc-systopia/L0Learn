@@ -60,4 +60,23 @@ export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
 
 # Verify installation
 echo "Verifying Armadillo installation..."
-ls -la /usr/local/lib/libarmadillo*
+if [ -f /usr/local/lib/libarmadillo.so ] || [ -f /usr/local/lib64/libarmadillo.so ]; then
+  echo "Armadillo library found!"
+  if [ -f /usr/local/lib/libarmadillo.so ]; then
+    ls -la /usr/local/lib/libarmadillo*
+  fi
+  if [ -f /usr/local/lib64/libarmadillo.so ]; then
+    ls -la /usr/local/lib64/libarmadillo*
+    # Create symlinks in /usr/local/lib if the library is in lib64
+    if [ ! -f /usr/local/lib/libarmadillo.so ]; then
+      echo "Creating symlinks in /usr/local/lib..."
+      $use_sudo mkdir -p /usr/local/lib
+      $use_sudo ln -sf /usr/local/lib64/libarmadillo.so.* /usr/local/lib/
+      $use_sudo ln -sf /usr/local/lib64/libarmadillo.so /usr/local/lib/
+      ls -la /usr/local/lib/libarmadillo*
+    fi
+  fi
+else
+  echo "Error: Armadillo library not found in /usr/local/lib or /usr/local/lib64"
+  exit 1
+fi
