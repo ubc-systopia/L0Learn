@@ -19,11 +19,27 @@ $use_sudo cp $basedir/include/* /usr/local/include
 
 # Build and install Armadillo from the submodule
 echo "Building Armadillo from submodule..."
-cd external/armadillo-code
+# Get the current directory
+CURRENT_DIR=$(pwd)
+echo "Current directory: $CURRENT_DIR"
+
+# Check if we're in the cibuildwheel environment
+if [ -d "/project/external/armadillo-code" ]; then
+  echo "Using cibuildwheel paths"
+  cd /project/external/armadillo-code
+elif [ -d "$CURRENT_DIR/external/armadillo-code" ]; then
+  echo "Using relative paths from current directory"
+  cd $CURRENT_DIR/external/armadillo-code
+else
+  echo "Trying parent directory"
+  cd ../external/armadillo-code
+fi
+
+echo "Building Armadillo in: $(pwd)"
 cmake -DCMAKE_INSTALL_PREFIX=/usr/local .
 make -j4
 $use_sudo make install
-cd ../..
+cd $CURRENT_DIR
 
 # Create a configuration file for the dynamic linker
 echo "Configuring dynamic linker..."
