@@ -38,7 +38,11 @@ jobs:
         env:
           CIBW_BUILD: cp38-* cp39-* cp310-* cp311-* cp312-*
           CIBW_SKIP: pp* *-win32 *-manylinux_i686 *musllinux*
-          CIBW_BEFORE_ALL_LINUX: "yum install -y lapack-devel openblas-devel cmake gcc gcc-c++ make || (apt-get update && apt-get install -y liblapack-dev libopenblas-dev cmake build-essential) && bash scripts/install_linux_libs.sh"
+          CIBW_BEFORE_ALL_LINUX: "if command -v yum &> /dev/null; then yum install -y lapack-devel openblas-devel cmake gcc gcc-c++ make; else apt-get update && apt-get install -y liblapack-dev libopenblas-dev cmake build-essential; fi && bash scripts/install_linux_libs.sh"
+          CIBW_BEFORE_ALL_MACOS: "chmod +x scripts/macos_arm64_fix.sh && scripts/macos_arm64_fix.sh"
+          CIBW_ENVIRONMENT_MACOS: "MACOSX_DEPLOYMENT_TARGET=10.15"
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: "delocate-listdeps {wheel} && delocate-wheel --require-archs x86_64 -w {dest_dir} {wheel}"
+          CIBW_ARCHS_MACOS: "x86_64"
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4

@@ -26,6 +26,25 @@ if($ENV{CIBUILDWHEEL})
     set(ALLOW_OPENBLAS_MACOS ON CACHE BOOL "Allow detection of OpenBLAS on macOS" FORCE)
     target_compile_definitions(armadillo PRIVATE -DARMA_USE_LAPACK)
     target_compile_definitions(armadillo PRIVATE -DARMA_USE_BLAS)
+    
+    # Add specific flags for macOS
+    if(APPLE)
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version" FORCE)
+        
+        # Detect architecture
+        execute_process(
+            COMMAND uname -m
+            OUTPUT_VARIABLE ARCH
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        
+        # Set architecture-specific flags
+        if(ARCH STREQUAL "arm64")
+            set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "Build architectures for macOS" FORCE)
+        else()
+            set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE STRING "Build architectures for macOS" FORCE)
+        endif()
+    endif()
 endif()
 
 INCLUDE_DIRECTORIES(fastsparsegams)
