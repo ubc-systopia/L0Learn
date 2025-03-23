@@ -12,7 +12,13 @@ if [ -z "$use_sudo" ]; then
   fi
 fi
 
+# Create necessary directories
+echo "Creating necessary directories..."
+$use_sudo mkdir -p /usr/local/lib
+$use_sudo mkdir -p /usr/local/include
+
 # Install OpenBLAS
+echo "Installing OpenBLAS..."
 basedir=$(python3 scripts/openblas_support.py)
 $use_sudo cp -r $basedir/lib/* /usr/local/lib
 $use_sudo cp $basedir/include/* /usr/local/include
@@ -49,34 +55,52 @@ make -j4
 $use_sudo make install
 cd $CURRENT_DIR
 
-# Create a configuration file for the dynamic linker
+# Configure dynamic linker based on OS
 echo "Configuring dynamic linker..."
-echo "/usr/local/lib" | $use_sudo tee /etc/ld.so.conf.d/usr-local.conf
-$use_sudo ldconfig
-
-# Set library paths for the current session
-export DYLD_FALLBACK_LIBRARY_PATH=/usr/local/lib/
-export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS specific configuration
+  echo "Running on macOS, setting DYLD paths"
+  export DYLD_FALLBACK_LIBRARY_PATH=/usr/local/lib/
+  export DYLD_LIBRARY_PATH=/usr/local/lib/:$DYLD_LIBRARY_PATH
+else
+  # Linux specific configuration
+  echo "Running on Linux, configuring ldconfig"
+  echo "/usr/local/lib" | $use_sudo tee /etc/ld.so.conf.d/usr-local.conf
+  $use_sudo ldconfig
+  export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+fi
 
 # Verify installation
 echo "Verifying Armadillo installation..."
-if [ -f /usr/local/lib/libarmadillo.so ] || [ -f /usr/local/lib64/libarmadillo.so ]; then
-  echo "Armadillo library found!"
-  if [ -f /usr/local/lib/libarmadillo.so ]; then
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS uses .dylib extension
+  if [ -f /usr/local/lib/libarmadillo.dylib ]; then
+    echo "Armadillo library found!"
     ls -la /usr/local/lib/libarmadillo*
-  fi
-  if [ -f /usr/local/lib64/libarmadillo.so ]; then
-    ls -la /usr/local/lib64/libarmadillo*
-    # Create symlinks in /usr/local/lib if the library is in lib64
-    if [ ! -f /usr/local/lib/libarmadillo.so ]; then
-      echo "Creating symlinks in /usr/local/lib..."
-      $use_sudo mkdir -p /usr/local/lib
-      $use_sudo ln -sf /usr/local/lib64/libarmadillo.so.* /usr/local/lib/
-      $use_sudo ln -sf /usr/local/lib64/libarmadillo.so /usr/local/lib/
-      ls -la /usr/local/lib/libarmadillo*
-    fi
+  else
+    echo "Error: Armadillo library not found in /usr/local/lib"
+    exit 1
   fi
 else
-  echo "Error: Armadillo library not found in /usr/local/lib or /usr/local/lib64"
-  exit 1
+  # Linux uses .so extension
+  if [ -f /usr/local/lib/libarmadillo.so ] || [ -f /usr/local/lib64/libarmadillo.so ]; then
+    echo "Armadillo library found!"
+    if [ -f /usr/local/lib/libarmadillo.so ]; then
+      ls -la /usr/local/lib/libarmadillo*
+    fi
+    if [ -f /usr/local/lib64/libarmadillo.so ]; then
+      ls -la /usr/local/lib64/libarmadillo*
+      # Create symlinks in /usr/local/lib if the library is in lib64
+      if [ ! -f /usr/local/lib/libarmadillo.so ]; then
+        echo "Creating symlinks in /usr/local/lib..."
+        $use_sudo mkdir -p /usr/local/lib
+        $use_sudo ln -sf /usr/local/lib64/libarmadillo.so.* /usr/local/lib/
+        $use_sudo ln -sf /usr/local/lib64/libarmadillo.so /usr/local/lib/
+        ls -la /usr/local/lib/libarmadillo*
+      fi
+    fi
+  else
+    echo "Error: Armadillo library not found in /usr/local/lib or /usr/local/lib64"
+    exit 1
+  fi
 fi
