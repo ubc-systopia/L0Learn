@@ -15,8 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # os: [ubuntu-latest, macOS-latest]
-        os: [macOS-latest]
+        os: [ubuntu-latest, macOS-latest]
 
     steps:
       - name: Checkout l0learn
@@ -60,41 +59,40 @@ jobs:
           name: fastsparsegams-wheelhouse
           path: python/fastsparsegams-wheelhouse/
 
-  # Temporarily disabled for debugging macOS
-  # build_wheels_windows:
-  #   name: Build wheels on ${{ matrix.os }} for Python ${{ matrix.python-version }}
-  #   runs-on: ${{ matrix.os }}
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       os: [windows-2019]
-  #
-  #   steps:
-  #     - name: Checkout l0learn
-  #       uses: actions/checkout@v3
-  #       with:
-  #         submodules: true
-  #
-  #     - name: Setup Python
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: '3.x'
-  #
-  #     - name: Install cibuildwheel
-  #       run: python -m pip install cibuildwheel
-  #
-  #     - name: Build wheels
-  #       run: |
-  #         cd python
-  #         python -m cibuildwheel --output-dir fastsparsegams-wheelhouse
-  #       env:
-  #         CIBW_BUILD: cp38-* cp39-* cp310-* cp311-* cp312-*
-  #         CIBW_SKIP: pp* *-win32 *-manylinux_i686 *musllinux*
-  #     - name: Upload wheels
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: fastsparsegams-wheelhouse
-  #         path: python/fastsparsegams-wheelhouse/
+  build_wheels_windows:
+    name: Build wheels on ${{ matrix.os }} for Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2019]
+
+    steps:
+      - name: Checkout l0learn
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel
+
+      - name: Build wheels
+        run: |
+          cd python
+          python -m cibuildwheel --output-dir fastsparsegams-wheelhouse
+        env:
+          CIBW_BUILD: cp38-* cp39-* cp310-* cp311-* cp312-*
+          CIBW_SKIP: pp* *-win32 *-manylinux_i686 *musllinux*
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: fastsparsegams-wheelhouse
+          path: python/fastsparsegams-wheelhouse/
 
 #name: Build
 #
