@@ -56,7 +56,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: fastsparsegams-wheelhouse
+          name: fastsparsegams-wheelhouse-${{ matrix.os }}
           path: python/fastsparsegams-wheelhouse/
 
   build_wheels_windows:
@@ -91,7 +91,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: fastsparsegams-wheelhouse
+          name: fastsparsegams-wheelhouse-${{ matrix.os }}
           path: python/fastsparsegams-wheelhouse/
 
 #name: Build
