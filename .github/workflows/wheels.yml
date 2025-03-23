@@ -34,7 +34,7 @@ jobs:
       - name: Build wheels
         run: |
           cd python
-          python -m cibuildwheel --output-dir l0learn-wheelhouse
+          python -m cibuildwheel --output-dir fastsparsegams-wheelhouse
         env:
           CIBW_BUILD: cp38-* cp39-* cp310-* cp311-* cp312-*
           CIBW_SKIP: pp* *-win32 *-manylinux_i686 *musllinux*
@@ -43,8 +43,8 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v2
         with:
-          name: l0learn-wheelhouse
-          path: python/l0learn-wheelhouse/
+          name: fastsparsegams-wheelhouse
+          path: python/fastsparsegams-wheelhouse/
 
   build_wheels_windows:
     name: Build wheels on ${{ matrix.os }} for Python ${{ matrix.python-version }}
@@ -71,15 +71,15 @@ jobs:
       - name: Build wheels
         run: |
           cd python
-          python -m cibuildwheel --output-dir l0learn-wheelhouse
+          python -m cibuildwheel --output-dir fastsparsegams-wheelhouse
         env:
           CIBW_BUILD: cp38-* cp39-* cp310-* cp311-* cp312-*
           CIBW_SKIP: pp* *-win32 *-manylinux_i686 *musllinux*
       - name: Upload wheels
         uses: actions/upload-artifact@v2
         with:
-          name: l0learn-wheelhouse
-          path: python/l0learn-wheelhouse/
+          name: fastsparsegams-wheelhouse
+          path: python/fastsparsegams-wheelhouse/
 
 #name: Build
 #
