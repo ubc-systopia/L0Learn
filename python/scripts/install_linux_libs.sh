@@ -36,7 +36,15 @@ else
 fi
 
 echo "Building Armadillo in: $(pwd)"
-cmake -DCMAKE_INSTALL_PREFIX=/usr/local .
+
+# Clean up any existing CMake cache files
+echo "Cleaning up any existing CMake cache files..."
+rm -f CMakeCache.txt
+rm -rf CMakeFiles
+
+# Run CMake from scratch
+echo "Running CMake..."
+cmake -DCMAKE_INSTALL_PREFIX=/usr/local . -DCMAKE_BUILD_TYPE=Release
 make -j4
 $use_sudo make install
 cd $CURRENT_DIR
