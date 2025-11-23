@@ -332,6 +332,13 @@ cvfitmodel L0LearnCV(
           CVError[i](k, j) =
               arma::sum(onemyxb.elem(indices) % onemyxb.elem(indices)) /
               yvalidation.n_rows;
+        } else if (PG.P.Specs.Exponential) {
+          arma::sp_mat B = Gtraining.Solutions[i][k];
+          double b0 = Gtraining.Intercepts[i][k];
+          arma::vec inv_expyxb =
+              arma::exp(-yvalidation % (Xvalidation * B + b0));
+          CVError[i](k, j) =
+              arma::sum(inv_expyxb) / static_cast<double>(yvalidation.n_rows);
         }
       }
     }
